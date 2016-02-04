@@ -83,17 +83,21 @@ public class Auction
         if((lotNumber >= 1) && (lotNumber < nextLotNumber) && (lots.get(lotNumber - 1) != null)) {
             // The number seems to be reasonable.
             int index = 0;
+            boolean notfound = true;
             Lot selectedLot = null;
-            while(lots.get(index).getNumber() == lotNumber){
-                selectedLot = lots.get(index);
+            while(notfound && index < lots.size()){
+                if(lots.get(index).getNumber() == lotNumber){
+                    selectedLot = lots.get(index);
+                    notfound = false;
+                }
                 index++;
             }
             // Include a confidence check to be sure we have the
             // right lot.
             if(selectedLot == null){
-                System.out.println("Internal error: Lot number has remove");
+                System.out.println("Internal error: Lot number don´t have any lot.");
             }
-            if(selectedLot.getNumber() != lotNumber) {
+            else if(selectedLot.getNumber() != lotNumber) {
                 System.out.println("Internal error: Lot number " +
                                    selectedLot.getNumber() +
                                    " was returned instead of " +
