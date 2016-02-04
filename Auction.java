@@ -148,7 +148,18 @@ public class Auction
     /**
      * Elimina un objeto en subasta
      */
-    public void deleteLot(int index){
-        lots.remove(index);
+    public Lot deleteLot(int lotNumber){
+        int index = 0;
+        boolean notfound = true;
+        Lot selectedLot = null;
+        while(notfound && index < lots.size()){
+            if(lots.get(index).getNumber() == lotNumber){
+                selectedLot = lots.get(index);
+                lots.remove(index);
+                notfound = false;
+            }
+            index++;
+        }
+        return selectedLot;
     }
 }
