@@ -80,11 +80,19 @@ public class Auction
      */
     public Lot getLot(int lotNumber)
     {
-        if((lotNumber >= 1) && (lotNumber < nextLotNumber)) {
+        if((lotNumber >= 1) && (lotNumber < nextLotNumber) && (lots.get(lotNumber - 1) != null)) {
             // The number seems to be reasonable.
-            Lot selectedLot = lots.get(lotNumber - 1);
+            int index = 0;
+            Lot selectedLot = null;
+            while(lots.get(index).getNumber() == lotNumber){
+                selectedLot = lots.get(index);
+                index++;
+            }
             // Include a confidence check to be sure we have the
             // right lot.
+            if(selectedLot == null){
+                System.out.println("Internal error: Lot number has remove");
+            }
             if(selectedLot.getNumber() != lotNumber) {
                 System.out.println("Internal error: Lot number " +
                                    selectedLot.getNumber() +
@@ -111,12 +119,32 @@ public class Auction
             Lot lot = it.next();
             String bidder = "";
             if(lot.getHighestBid() != null){
-                bidder = " pujado por anónimo";
-                if(lot.getHighestBid().getBidder() != null){
                     bidder = " pujado por " + lot.getHighestBid().getBidder().getName();
-                }
             }
             System.out.println ("Objeto número " + lot.toString() + bidder + ".");
         }        
+    }
+    
+    /**
+     * Devuelve los objetos que no tienen ninguna puja
+     */
+    public ArrayList<Lot> getUnsol(){        
+        ArrayList<Lot> copia = new ArrayList<>();
+        copia = (ArrayList)lots.clone();
+        Iterator<Lot> it = copia.iterator();        
+        while(it.hasNext()){            
+            Lot lot = it.next();
+            if(lot.getHighestBid() != null){
+                it.remove();
+            }
+        }
+        return copia;
+    }
+    
+    /**
+     * Elimina un objeto en subasta
+     */
+    public void deleteLot(int index){
+        lots.remove(index);
     }
 }
