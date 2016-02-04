@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A simple model of an auction.
@@ -99,5 +100,23 @@ public class Auction
                                " does not exist.");
             return null;
         }
+    }
+    
+    /**
+     * Muestra por pantalla los objetos que estan en subasta
+     */
+    public void close(){
+        Iterator<Lot> it = lots.iterator();        
+        while(it.hasNext()){            
+            Lot lot = it.next();
+            String bidder = "";
+            if(lot.getHighestBid() != null){
+                bidder = " pujado por anónimo";
+                if(lot.getHighestBid().getBidder() != null){
+                    bidder = " pujado por " + lot.getHighestBid().getBidder().getName();
+                }
+            }
+            System.out.println ("Objeto número " + lot.toString() + bidder + ".");
+        }        
     }
 }
